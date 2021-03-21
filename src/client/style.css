@@ -1,0 +1,14 @@
+header {
+  display: flex;
+}
+
+header > h1.ant-typography {
+  color: #fff;
+  margin: auto 0;
+}
+
+.ant-modal-close-x {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
