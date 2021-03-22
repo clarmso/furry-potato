@@ -1,0 +1,10 @@
+[
+  {
+    "id": 1,
+    "name": "Product A",
+    "description": "Probably the least reliable one on the list",
+    "price": 120,
+    "inventory": 10,
+    "imgUrl": "https://images.unsplash.com/photo-1584942368913-b98dd9983c7e?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=200&ixlib=rb-1.2.1&q=80&w=400"
+  }
+]
