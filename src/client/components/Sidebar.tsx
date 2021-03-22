@@ -51,6 +51,7 @@ const Sidebar: React.FunctionComponent<SidebarProps> = (
         disabled={isCreating}
         icon={<PlusCircleOutlined />}
         onClick={() => setIsCreating(true)}
+        id="create_product"
       >
         Create Product
       </Menu.Item>
