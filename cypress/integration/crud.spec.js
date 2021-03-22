@@ -2,6 +2,7 @@
 
 import faker from "faker";
 import StatusCodes from "http-status-codes";
+import emoji from "random-happy-emoji";
 
 context("CRUD operations", () => {
   const createName = () => {
@@ -140,6 +141,39 @@ context("CRUD operations", () => {
         expect(response.statusCode).equal(StatusCodes.CREATED);
         expect(response.body).to.have.property("id");
         expect(response.body.name).equal(name);
+      });
+      cy.wait("@getProducts");
+      cy.get("div.ant-modal").should("not.be.visible");
+      cy.contains(`Created ${name} successfully`).should("be.visible");
+      cy.verifyProductCard({
+        name,
+        description,
+        imgUrl,
+        price,
+        inventory,
+      });
+    });
+
+    it("create product that contains non-ASCII character name and description", () => {
+      const name = emoji();
+      const description = emoji();
+      const imgUrl = createImgUrl();
+      const price = createPrice();
+      const inventory = createInventory();
+      cy.fillCreateProductModal({
+        name,
+        description,
+        imgUrl,
+        price,
+        inventory,
+      });
+      cy.contains("button", "Create").click();
+      cy.wait("@postProducts").should(({ request, response }) => {
+        expect(request.body.name).equal(name);
+        expect(request.body.description).equal(description);
+        expect(response.statusCode).equal(StatusCodes.CREATED);
+        expect(response.body.name).equal(name);
+        expect(response.body.description).equal(description);
       });
       cy.wait("@getProducts");
       cy.get("div.ant-modal").should("not.be.visible");
@@ -328,6 +362,7 @@ context("CRUD operations", () => {
       });
       cy.visit("/");
       cy.contains("h1", "Productotron 3000").should("be.visible");
+      cy.contains("h2", "Product Catalog").should("be.visible");
     });
 
     it("delete a product", () => {
