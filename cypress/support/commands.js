@@ -119,10 +119,12 @@ Cypress.Commands.add(
             : null;
         }
         {
-          price ? cy.contains(`Price: \$${price}`).should("be.visible") : null;
+          price !== undefined
+            ? cy.contains(`Price: \$${price}`).should("be.visible")
+            : null;
         }
         {
-          inventory
+          inventory !== undefined
             ? cy.contains(`Inventory: ${inventory}`).should("be.visible")
             : null;
         }
