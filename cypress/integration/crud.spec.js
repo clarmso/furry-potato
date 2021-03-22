@@ -1,46 +1,16 @@
 // <reference types="Cypress" />
 
-import faker from "faker";
 import StatusCodes from "http-status-codes";
 import emoji from "random-happy-emoji";
+import {
+  createName,
+  createDescription,
+  createImgUrl,
+  createPrice,
+  createInventory,
+} from "../helper/utilities";
 
 context("CRUD operations", () => {
-  const createName = () => {
-    return faker.lorem.words(Cypress._.random(3, 5));
-  };
-
-  const createDescription = () => {
-    return faker.lorem.words(Cypress._.random(4, 10));
-  };
-
-  const createImgUrl = () => {
-    const category = [
-      "abstract",
-      "animals",
-      "business",
-      "cats",
-      "city",
-      "food",
-      "nightlife",
-      "fashion",
-      "people",
-      "nature",
-      "sports",
-      "technics",
-      "transport",
-    ];
-    const randomIndex = Cypress._.random(0, category.length);
-    return faker.image.imageUrl(400, 200, category[randomIndex]);
-  };
-
-  const createPrice = () => {
-    return faker.random.number({ min: 0.1, max: 100, precision: 0.01 });
-  };
-
-  const createInventory = () => {
-    return Cypress._.random(0, 100);
-  };
-
   beforeEach(() => {
     cy.intercept("GET", "/products").as("getProducts");
     cy.intercept("DELETE", "/products/*").as("deleteProducts");
@@ -89,7 +59,6 @@ context("CRUD operations", () => {
         expect(request.body.name).equal(name);
         expect(response.statusCode).equal(StatusCodes.CREATED);
         expect(response.body).to.have.property("id");
-        expect(response.body.name).equal(name);
       });
       cy.wait("@getProducts");
       cy.get("div.ant-modal").should("not.be.visible");
@@ -106,7 +75,6 @@ context("CRUD operations", () => {
           expect(request.body.name).equal(name);
           expect(response.statusCode).equal(StatusCodes.CREATED);
           expect(response.body).to.have.property("id");
-          expect(response.body.name).equal(name);
         });
         cy.wait("@getProducts");
         cy.get("div.ant-modal").should("not.be.visible");
@@ -140,7 +108,6 @@ context("CRUD operations", () => {
         expect(request.body.inventory).equal(inventory);
         expect(response.statusCode).equal(StatusCodes.CREATED);
         expect(response.body).to.have.property("id");
-        expect(response.body.name).equal(name);
       });
       cy.wait("@getProducts");
       cy.get("div.ant-modal").should("not.be.visible");
@@ -172,8 +139,6 @@ context("CRUD operations", () => {
         expect(request.body.name).equal(name);
         expect(request.body.description).equal(description);
         expect(response.statusCode).equal(StatusCodes.CREATED);
-        expect(response.body.name).equal(name);
-        expect(response.body.description).equal(description);
       });
       cy.wait("@getProducts");
       cy.get("div.ant-modal").should("not.be.visible");
@@ -324,6 +289,7 @@ context("CRUD operations", () => {
       cy.contains("button", "Edit").click();
       cy.wait("@patchProducts").should(({ request, response }) => {
         expect(request.url).to.include(id);
+        expect(request.body.name).equal(name);
         expect(request.body.description).equal(newDescription);
         expect(request.body.imgUrl).equal(newImgUrl);
         expect(request.body.price).equal(newPrice);
