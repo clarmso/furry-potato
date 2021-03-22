@@ -30,11 +30,11 @@ Cypress.Commands.add(
   "fillInfo",
   ({
     header = "Create Product",
-    name = "",
-    description = "",
-    imgUrl = "",
-    price = "",
-    inventory = "",
+    name,
+    description,
+    imgUrl,
+    price,
+    inventory,
   } = {}) => {
     cy.contains("div:visible", header).should("exist");
     cy.contains("div:visible", header)
@@ -53,10 +53,12 @@ Cypress.Commands.add(
           imgUrl ? cy.findByTestId("imgUrl").clear().type(imgUrl) : null;
         }
         {
-          price ? cy.findByTestId("price").clear().type(price) : null;
+          price !== undefined
+            ? cy.findByTestId("price").clear().type(price)
+            : null;
         }
         {
-          inventory
+          inventory !== undefined
             ? cy.findByTestId("inventory").clear().type(inventory)
             : null;
         }
@@ -66,13 +68,7 @@ Cypress.Commands.add(
 
 Cypress.Commands.add(
   "fillCreateProductModal",
-  ({
-    name = "",
-    description = "",
-    imgUrl = "",
-    price = "",
-    inventory = "",
-  } = {}) => {
+  ({ name, description, imgUrl, price, inventory } = {}) => {
     cy.fillInfo({
       header: "Create Product",
       name,
@@ -86,13 +82,7 @@ Cypress.Commands.add(
 
 Cypress.Commands.add(
   "fillEditProductModal",
-  ({
-    name = "",
-    description = "",
-    imgUrl = "",
-    price = "",
-    inventory = "",
-  } = {}) => {
+  ({ name, description, imgUrl, price, inventory } = {}) => {
     cy.fillInfo({
       header: "Edit Product",
       name,
@@ -106,13 +96,7 @@ Cypress.Commands.add(
 
 Cypress.Commands.add(
   "verifyProductCard",
-  ({
-    name = "",
-    description = "",
-    imgUrl = "",
-    price = "",
-    inventory = "",
-  } = {}) => {
+  ({ name, description, imgUrl, price, inventory } = {}) => {
     cy.contains("div.ant-card-meta-title", name)
       .parentsUntil("div.ant-card")
       .last()
@@ -159,13 +143,7 @@ Cypress.Commands.add("clickPencilIcon", (name) => {
 
 Cypress.Commands.add(
   "verifyProductModal",
-  ({
-    name = "",
-    description = "",
-    imgUrl = "",
-    price = "",
-    inventory = "",
-  } = {}) => {
+  ({ name, description, imgUrl, price, inventory } = {}) => {
     cy.clickPencilIcon(name);
     cy.contains("div:visible", "Edit Product")
       .parentsUntil("div.ant-modal")
@@ -185,12 +163,12 @@ Cypress.Commands.add(
             : null;
         }
         {
-          price
+          price !== undefined
             ? cy.findByTestId("price").should("have.value", `\$${price}`)
             : null;
         }
         {
-          inventory
+          inventory !== undefined
             ? cy.findByTestId("inventory").should("have.value", inventory)
             : null;
         }
