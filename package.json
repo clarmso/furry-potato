@@ -6,7 +6,8 @@
     "build": "rimraf build && npm run lint && npm run format && tsc && rimraf dist && webpack",
     "develop": "NODE_ENV=development node build/index.js",
     "cy:open": "npx cypress open",
-    "cy:run": "npx cypress run --browser chrome --headless",
+    "cy:run:chrome": "npx cypress run --browser chrome --headless",
+    "cy:run:firefox": "npx cypress run --browser firefox --headless",
     "format": "prettier --write .",
     "lint": "eslint ./src",
     "start": "node build/index.js"

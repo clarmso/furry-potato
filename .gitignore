@@ -2,3 +2,6 @@ build/
 dist/
 node_modules/
 .env
+videos/
+screenshots/
+snapshots/
